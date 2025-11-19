@@ -7,22 +7,23 @@ import 'package:pas_mobile_11pplg2_12/routes/routes.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final prefs = await SharedPreferences.getInstance();
-  final username = prefs.getString("username");
-  final isLoggedIn = username != null;
+  await SharedPreferences.getInstance();
 
-  runApp(MyApp(isLoggedIn: isLoggedIn));
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final bool isLoggedIn;
-  const MyApp({super.key, required this.isLoggedIn});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      initialRoute:
-          isLoggedIn ? AppRoutes.splashscreenPage : AppRoutes.loginPage,
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      ),
+      initialRoute: AppRoutes.splashscreenPage,
       getPages: AppPages.pages,
     );
   }
