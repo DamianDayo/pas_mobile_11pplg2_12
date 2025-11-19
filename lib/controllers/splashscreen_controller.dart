@@ -1,18 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pas_mobile_11pplg2_12/routes/routes.dart';
 
 class SplashscreenController extends GetxController {
-  final bool fromLogin;
-
-  var isMobile = true.obs;
-  void updateLayout(BoxConstraints constraints) {
-    isMobile.value = constraints.maxWidth < 600;
-  }
-
-  SplashscreenController({this.fromLogin = false});
-
   @override
   void onInit() {
     super.onInit();

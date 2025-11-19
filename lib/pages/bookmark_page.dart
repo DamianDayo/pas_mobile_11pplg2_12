@@ -1,60 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pas_mobile_11pplg2_12/controllers/shows_controller.dart';
-import 'package:pas_mobile_11pplg2_12/reusable components/custom_color.dart';
-import 'package:pas_mobile_11pplg2_12/reusable components/shows_widget.dart';
+import '../controllers/bookmark_controller.dart';
 
 class BookmarkPage extends StatelessWidget {
-  BookmarkPage({super.key});
-  final controller = Get.find<ShowsController>();
+  final bookmarkController = Get.put(BookmarkController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 10),
-        child: Obx(() {
-          if (controller.isLoading.value) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (controller.showsMark.isEmpty) {
-            return Center(
-              child: Text(
-                "Belum ada show dibookmark",
-                style: TextStyle(
-                  color: AppColor.primaryblue,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+      appBar: AppBar(title: Text('Bookmarks')),
+      body: Obx(() {
+        if (bookmarkController.bookmarks.isEmpty) {
+          return Center(child: Text("No bookmarks yet"));
+        }
+
+        return ListView.builder(
+          itemCount: bookmarkController.bookmarks.length,
+          itemBuilder: (context, index) {
+            final show = bookmarkController.bookmarks[index];
+            return ListTile(
+              leading: Image.network(show.image.medium),
+              title: Text(show.name),
+              subtitle: Text("Rating: ${show.rating.average ?? '-'}"),
+              trailing: IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  bookmarkController.toggleBookmark(show);
+                },
               ),
             );
-          }
-          return RefreshIndicator(
-            onRefresh: () async {
-              controller.fetchMarkShows();
-            },
-            child: ListView.builder(
-              itemCount: controller.showsMark.length,
-              itemBuilder: (context, index) {
-                final shows = controller.showsMark[index];
-
-                return ShowsWidget(
-                  image: shows.image,
-                  name: shows.name,
-                  genres: shows.genres,
-                  rating: shows.rating,
-                  text: "Hapus",
-                  buttonCollor: AppColor.secondaryred,
-                  prefixIcon: Icon(Icons.delete, color: AppColor.neutrallight),
-                  onFavoriteTap: () {
-                    controller.deleteMarkShows(index);
-                  },
-                );
-              },
-            ),
-          );
-        }),
-      ),
+          },
+        );
+      }),
     );
   }
 }

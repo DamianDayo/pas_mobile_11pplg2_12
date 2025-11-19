@@ -1,76 +1,73 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pas_mobile_11pplg2_12/controllers/authentification_controller.dart';
-import 'package:pas_mobile_11pplg2_12/routes/routes.dart';
-import 'package:pas_mobile_11pplg2_12/reusable components/custom_color.dart';
 import 'package:pas_mobile_11pplg2_12/reusable components/custom_button.dart';
 import 'package:pas_mobile_11pplg2_12/reusable components/custom_textfield.dart';
+import 'package:pas_mobile_11pplg2_12/controllers/login_controller.dart';
+import 'package:pas_mobile_11pplg2_12/routes/routes.dart';
 
 class LoginPage extends StatelessWidget {
+  final LoginController controller = Get.find<LoginController>();
+
   LoginPage({super.key});
-  final controller = Get.find<AuthentificationController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Card(
-          elevation: 4,
-          margin: EdgeInsets.all(10),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+      appBar: AppBar(
+        title: const Text("Login Page"),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CustomTextfield(
+              label: "Username",
+              controller: controller.usernameController,
+            ),
+
+            CustomTextfield(
+              label: "Password",
+              controller: controller.passwordController,
+              obscureText: true,
+            ),
+
+            const SizedBox(height: 24),
+
+            Obx(() {
+              return controller.isApiLoading.value
+                  ? const CircularProgressIndicator()
+                  : CustomButton(
+                      text: "Login",
+                      textcolor: Colors.black,
+                      onPressed: controller.login,
+                    );
+            }),
+
+            const SizedBox(height: 20),
+
+            const Row(
               children: [
-                Text(
-                  "Login Page",
-                  style: TextStyle(
-                    color: Colors.blueAccent,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
+                Expanded(child: Divider(thickness: 1)),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text("Belum punya akun?"),
                 ),
-                SizedBox(height: 15),
-                CustomTextfield(
-                  label: "Username",
-                  prefixIcon: Icon(Icons.person),
-                  controller: controller.username,
-                ),
-                SizedBox(height: 15),
-                CustomTextfield(
-                  label: "Password",
-                  prefixIcon: Icon(Icons.password),
-                  obscureText: true,
-                  controller: controller.password,
-                ),
-                SizedBox(height: 20),
-                Obx(
-                  () => controller.isLoading.value
-                      ? const CircularProgressIndicator()
-                      : CustomButton(
-                          text: "Login",
-                          textcolor: AppColor.neutrallight,
-                          backgroundcolor: AppColor.primaryblue,
-                          onPressed: () {
-                            controller.login();
-                          },
-                        ),
-                ),
-                SizedBox(height: 15),
-                CustomButton(
-                  text: "Register",
-                  textcolor: AppColor.primaryblue,
-                  backgroundcolor: AppColor.neutrallight,
-                  onPressed: () {
-                    Get.toNamed(AppRoutes.registerPage);
-                  },
-                ),
+                Expanded(child: Divider(thickness: 1)),
               ],
             ),
-          ),
+
+            const SizedBox(height: 20),
+
+            CustomButton(
+              text: "Register",
+              textcolor: Colors.black,
+              onPressed: () {
+                Get.toNamed(AppRoutes.registerPage);
+              },
+            ),
+          ],
         ),
       ),
     );

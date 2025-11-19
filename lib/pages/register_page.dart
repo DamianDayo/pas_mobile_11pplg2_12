@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pas_mobile_11pplg2_12/controllers/authentification_controller.dart';
-import 'package:pas_mobile_11pplg2_12/routes/routes.dart';
+import 'package:pas_mobile_11pplg2_12/controllers/register_controller.dart';
 import 'package:pas_mobile_11pplg2_12/reusable components/custom_color.dart';
 import 'package:pas_mobile_11pplg2_12/reusable components/custom_button.dart';
 import 'package:pas_mobile_11pplg2_12/reusable components/custom_textfield.dart';
 
 class RegisterPage extends StatelessWidget {
   RegisterPage({super.key});
-  final controller = Get.find<AuthentificationController>();
+  final controller = Get.find<RegisterController>();
 
   @override
   Widget build(BuildContext context) {
@@ -65,15 +64,6 @@ class RegisterPage extends StatelessWidget {
                   textcolor: AppColor.neutrallight,
                   onPressed: () {
                     controller.register();
-                  },
-                ),
-                SizedBox(height: 15),
-                CustomButton(
-                  text: "Login",
-                  backgroundcolor: AppColor.neutrallight,
-                  textcolor: AppColor.primaryblue,
-                  onPressed: () {
-                    Get.toNamed(AppRoutes.loginPage);
                   },
                 ),
               ],
